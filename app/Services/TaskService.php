@@ -9,7 +9,7 @@ use App\Models\Task;
 
 class TaskService {
 
-    public function getAllTasks(array $data)
+    public function getTasks(array $data)
     {
         $tasks = Task::all();
 
