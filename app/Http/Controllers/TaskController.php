@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Requests\FindTasksRequest;
 
 use App\Models\Task;
 use App\Services\TaskService;
@@ -22,9 +23,9 @@ class TaskController
         $this->taskService = $taskService;
     }
 
-    public function index(Request $request)
+    public function index(FindTasksRequest $request)
     {
-        $tasks = $this->taskService->getAllTasks();
+        $tasks = $this->taskService->getTasks($request->validated());
 
         if ($tasks) {
             return new JsonResponse(['success' => true, 'data' => (new TaskCollection($tasks))->toArray($request)], 200);

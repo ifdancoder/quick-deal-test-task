@@ -6,13 +6,20 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
 use App\Models\Task;
-use App\Models\Country;
 
 class TaskService {
 
-    public function getAllTasks()
+    public function getAllTasks(array $data)
     {
         $tasks = Task::all();
+
+        if (array_key_exists('status_id', $data)) {
+            $tasks = $tasks->where('status_id', $data['status_id']);
+        }
+
+        if (array_key_exists('due_date', $data)) {
+            $tasks = $tasks->where('due_date', $data['due_date']);
+        }
 
         return $tasks;
     }
@@ -29,7 +36,7 @@ class TaskService {
         if (!isset($data['status_id'])) {
             $data['status_id'] = 1;
         }
-        
+
         $task = Task::create($data);
         
         return $task;
